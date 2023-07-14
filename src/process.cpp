@@ -25,7 +25,10 @@ int Process::Pid() {
 float Process::CpuUtilization() {
     float cpu_utilization_ = 0;
     //use LinuxParser::ActiveJiffies(int pid) to get the active jiffies of the process
-    cpu_utilization_ = LinuxParser::ActiveJiffies(Pid());
+    //cpu_utilization_ = LinuxParser::ActiveJiffies(Pid());
+    long seconds =LinuxParser::UpTime(Pid());
+    long totaltime = LinuxParser::ActiveJiffies(Pid());
+    cpu_utilization_ = float(totaltime) / float(seconds);
     return cpu_utilization_; 
 }
 
@@ -63,7 +66,8 @@ long int Process::UpTime() {
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a) const { 
+/* bool Process::operator<(Process const& a) const { 
     //compare the cpu utilization of two processes
-    return true;
-    }
+    return this->CpuUtilization() < a.CpuUtilization();
+ *}/ */
+
