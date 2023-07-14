@@ -410,18 +410,35 @@ long LinuxParser::UpTime(int pid) {
         linestream >> value;
       }
     }
-    starttime = std::stol(value);
+    //starttime = std::stol(value);
+    try {
+      starttime = std::stol(value); 
+    } catch(const std::invalid_argument& e) {
+      // handle error
+      starttime = 0;
+    }
     std::ifstream filestream2(kProcDirectory + kUptimeFilename);
+    string value2;
     if(filestream2.is_open()){
       std::getline(filestream2, line);
       std::istringstream linestream2(line);
-      linestream2 >> value;
+      linestream2 >> value2;
     }
-    uptime = std::stol(value);
+    uptime = std::stol(value2);
+    try {
+      uptime = std::stol(value2); 
+    } catch(const std::invalid_argument& e) {
+      // handle error
+      uptime = 0;
+    }
       // Next we get the total elapsed time in seconds since the process started:
-
+    if (starttime != 0 && uptime != 0){
+      seconds = uptime - (starttime / sysconf(_SC_CLK_TCK));
+    }
+    else{
       // seconds = uptime - (starttime / Hertz)
-    seconds = uptime - (starttime / sysconf(_SC_CLK_TCK));
+      seconds = 0;
+    }
       // Read /proc/uptime and take parameter #1 uptime of the system (seconds)
 
     

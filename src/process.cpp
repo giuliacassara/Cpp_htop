@@ -66,8 +66,8 @@ long int Process::UpTime() {
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-/* bool Process::operator<(Process const& a) const { 
+bool Process::operator<(Process& a){ 
     //compare the cpu utilization of two processes
-    return this->CpuUtilization() < a.CpuUtilization();
- *}/ */
+    return CpuUtilization() < a.CpuUtilization();
+}
 
